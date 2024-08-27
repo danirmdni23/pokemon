@@ -5,7 +5,8 @@
       <div>
           <button @click="toggleModal">
               <p class="px-3 py-2 lg:px-5 lg:py-2 bg-white flex justify-center items-center rounded-full shadow-lg cursor-pointer">
-                  <span class="mr-2 text-sm">{{pCatchName.length}} cacth</span>
+                  <span class="mr-2 text-sm" v-if="pCatchName">{{pCatchName.length}} cacth</span>
+                  <span class="mr-2 text-sm" v-else>0 cacth</span>
                   <img src="https://pokedex-vert-one.vercel.app/bola.png" alt="" class="w-4 h-4 lg:w-5 lg:h-5">
               </p>
           </button>
@@ -23,10 +24,11 @@
         <div class="flex justify-center items-center px-2 py-2 lg:px-4 lg:py-7">
           <div class="w-full">
             <div class="flex justify-center items-center">
-              <h4 class="lg:text-2xl text-lg font-bold text-slate-700">{{pCatchName.length}} Pokemon </h4>
+              <h4 class="lg:text-2xl text-lg font-bold text-slate-700" v-if="pCatchName">{{pCatchName.length}} Pokemon </h4>
+              <h4 class="lg:text-2xl text-lg font-bold text-slate-700" v-else>0 Pokemon </h4>
             </div>
             <div class="overflow-y-auto no-scrollbar h-52 lg:h-80 lg:mt-5 mt-2 sm:mt-3 w-full justify-center items-center">
-              <div class="bg-slate-300 my-2 rounded-lg flex w-full px-4 py-2 gap-2" style="background-color: #e2e8f0bf;" v-if="pCatchName" v-for="(pcn, index) in pCatchName" :key="pcn">
+              <div class="bg-slate-300 my-2 rounded-lg flex w-full px-4 py-2 gap-2" style="background-color: #e2e8f0bf;" v-for="(pcn, index) in pCatchName" :key="pcn" v-if="pCatchName">
                 <div>
                   <img :src="`${pCatchImg[index]}`" alt="pokemon" class="w-10 lg:w-20">
                 </div>
