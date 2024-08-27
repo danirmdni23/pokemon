@@ -176,15 +176,21 @@ const catchPokemon = async () => {
   // pokemon name
   let pn = localStorage.getItem("pokemonName");
   pn = pn ? JSON.parse(pn) : [];
-  pn.push(pokemon.value.name);
+  if (!pn.includes(pokemon.value.name)) {
+    pn.push(pokemon.value.name);
+  }
   // pokemon id
   let pid = localStorage.getItem("pokemonId");
   pid = pid ? JSON.parse(pid) : [];
-  pid.push(pokemonId);
+  if (!pid.includes(pokemonId)) {
+    pid.push(pokemonId);
+  }
   // pokemon image
   let pimg = localStorage.getItem("pokemonImg");
   pimg = pimg ? JSON.parse(pimg) : [];
-  pimg.push(pokemon.value.sprites.other.dream_world.front_default);
+  if (!pimg.includes(pokemon.value.sprites.other.dream_world.front_default)) {
+    pimg.push(pokemon.value.sprites.other.dream_world.front_default);
+  }
   localStorage.setItem('pokemonName', JSON.stringify(pn));
   localStorage.setItem('pokemonId', JSON.stringify(pid));
   localStorage.setItem('pokemonImg', JSON.stringify(pimg));
