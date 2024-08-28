@@ -109,7 +109,7 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import PokemonModal from './PokemonModal.vue';
+import PokemonModal from '../components/PokemonModal.vue';
 import { toggleModal } from '../helpers/modal';
 
 const pokemons = ref(null);

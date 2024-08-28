@@ -17,8 +17,6 @@
       </div>
     </div>
 
-    <button class="btn btn-primary">Hallo</button>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-12 w-9/12 mt-20">
       <div v-for="(pokemon, index) in pokemons" :key="pokemon.name"
         class="card w-64 bg-white shadow-xl rounded-xl mb-6">
@@ -26,8 +24,7 @@
           class="rounded-xl bg-white w-full p-10 py-10 relative flex items-center justify-between mb-4 transition ease-in-out hover:-translate-y-2.5 duration-300">
           <div>
             <p>{{ (index + 1).toString().padStart(4, '0') }}</p>
-            <div
-              class="bg-primary rounded-lg text-slate-900 font-bold text-2xl hover:text-blue-500  cursor-pointer capitalize">
+            <div class="rounded-lg text-slate-900 font-bold text-2xl hover:text-blue-500  cursor-pointer capitalize">
               {{ pokemon.name }}</div>
           </div>
           <div class="absolute z-5 -top-16 -right-12">
@@ -48,7 +45,7 @@
 
 import axios from 'axios';
 import { ref, onMounted, reactive } from 'vue';
-import PokemonModal from './PokemonModal.vue';
+import PokemonModal from '../components/PokemonModal.vue';
 import { toggleModal } from '../helpers/modal';
 
 const pokemon = reactive({
