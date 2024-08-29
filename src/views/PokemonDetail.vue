@@ -1,14 +1,14 @@
 <template>
   <div class="min-h-screen flex flex-col items-center bg-gray-200">
-    <div
-      class="flex justify-between items-center sticky top-0 z-30 bg-slate-200/75 px-8 py-4 lg:px-20 shadow-sm w-full">
+    <div class="flex justify-between items-center sticky top-0 bg-gray-200 px-8 py-4 lg:px-20 shadow-sm w-full">
       <a href="/" class="router-link-active"><img src="https://pokedex-vert-one.vercel.app/okemon.png" alt="pokemon"
           class="h-10 w-30 lg:px-4"></a>
       <div>
         <button @click="toggleModal">
           <p
             class="px-3 py-2 lg:px-5 lg:py-2 bg-white flex justify-center items-center rounded-full shadow-lg cursor-pointer">
-            <span class="mr-2 text-sm" v-if="pokemon.name, pokemon.id, pokemon.image">{{ pokemon.name.length }}
+            <span class="mr-2 text-sm" v-if="pokemon.name, pokemon.id, pokemon.image" data-test="result-pokemon">{{
+              pokemon.name.length }}
               cacth</span>
             <span class="mr-2 text-sm" v-else>0 cacth</span>
             <img src="https://pokedex-vert-one.vercel.app/bola.png" alt="" class="w-4 h-4 lg:w-5 lg:h-5">
@@ -20,14 +20,16 @@
       <div class="w-full lg:px-2 md:w-1/2">
         <h4 class="text-medium flex justify-center font-semibold"> #{{ (pokemons.id).toString().padStart(4, '0') }}</h4>
         <div>
-          <h1 class="text-3xl font-bold tracking-widest capitalize text-center w-full">{{ pokemons.name }}</h1>
+          <h1 class="text-3xl font-bold tracking-widest capitalize text-center w-full" data-test="pokemon-name">{{
+            pokemons.name }}</h1>
         </div>
         <img :src="pokemons.sprites.other.dream_world.front_default" :alt="pokemon.name"
           class="w-full mx-auto sm:w-72 mt-10 mb-10">
         <button
           class="bg-white py-2 lg:py-1 lg:px-7 px-10 mx-auto flex rounded-3xl items-center justify-center hover:bg-yellow-400 mt-4">
           <img src="https://pokedex-vert-one.vercel.app/bola.png" alt="" class="w-8 mr-3 animate-bounce">
-          <button @click="catchPokemon" class="capitalize text-sm font-semibold">Catch {{ pokemons.name }}</button>
+          <button @click="catchPokemon" class="capitalize text-sm font-semibold" data-test="pokemon-catch">Catch {{
+            pokemons.name }}</button>
         </button>
       </div>
       <div class="w-full lg:px-4 md:w-1/2 md:mt-10 lg:mt-3">
@@ -98,7 +100,7 @@
       </div>
     </div>
     <div v-else>
-      <p>Loading...</p>
+      <p>Error</p>
     </div>
   </div>
   <Teleport to="body">
@@ -111,6 +113,7 @@ import { ref, onMounted, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import PokemonModal from '../components/PokemonModal.vue';
 import { toggleModal } from '../helpers/modal';
+import detailApi from '../apis/PokemonDetailApi';
 
 const pokemons = ref(null);
 const caught = ref(false);
@@ -125,8 +128,9 @@ const pokemonId = route.params.id;
 
 async function fetchPokemon() {
   try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`);
-    pokemons.value = await response.json();
+    const response = await detailApi.get(pokemonId);
+    console.log(response, 'response')
+    pokemons.value = response.data;
 
     const storedPokemon = localStorage.getItem('pokemonName');
     if (storedPokemon && JSON.parse(storedPokemon).name === pokemons.value.name) {
@@ -143,7 +147,7 @@ async function getCatchPokemon() {
     let namaPokemon = localStorage.getItem("pokemonName");
     let idPokemon = localStorage.getItem("pokemonId");
     let gambarPokemon = localStorage.getItem("pokemonImg");
-
+    console.log(namaPokemon, 'namaaa')
     // Jika ada data, parsing dan simpan di data property
     if (namaPokemon) {
       pokemon.name = JSON.parse(namaPokemon);
@@ -187,12 +191,6 @@ async function catchPokemon() {
   pokemon.image = JSON.parse(localStorage.getItem("pokemonImg"));
 };
 
-onMounted(() => {
-  fetchPokemon();
-  getCatchPokemon();
-})
-
-
 // Tabs
 import { Application, Controller } from "https://unpkg.com/@hotwired/stimulus/dist/stimulus.js"
 window.Stimulus = Application.start()
@@ -221,6 +219,12 @@ Stimulus.register("tabs", class extends Controller {
   }
 })
 // End Tabs
+
+onMounted(() => {
+  fetchPokemon();
+  getCatchPokemon();
+})
+
 </script>
 
 <style>
